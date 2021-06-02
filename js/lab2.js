@@ -6,31 +6,25 @@ let intervalId;
 let isHidden = false;
 
 window.onload = function () {
-    // Установка обработчиков
     document.getElementById("previous-slideshow-image-button").onclick = previousSlideshowImage;
     document.getElementById("next-slideshow-image-button").onclick = nextSlideshowImage;
     document.getElementById("toggle-button").onclick = toggle;
-    // Получение прошлого номера картинки
     if (localStorage["imageNumber"] !== undefined) {
         imageNumber = parseInt(localStorage["imageNumber"], 10);
     } else {
         imageNumber = 0;
     }
-    // Получение прошлого состояния переходов
     if (localStorage["isActive"] !== undefined) {
         isActive = localStorage["isActive"] === "true";
     } else {
         isActive = false;
     }
-    // Отображение индикаторов
     let indicatorsDiv = document.getElementById("indicators-div");
     for (let i = 0; i < IMAGES_NUMBER; i++) {
         indicatorsDiv.innerHTML += "<span id='slideshow-indicator-" + i + "' class='slideshow-indicator' onclick='setSlideshowImage(" + i + ")'></span>";
     }
-    // Установка начальной картинки
     updateSlideshowImage(imageNumber);
     updateSlideshowIndicator(-1, imageNumber);
-    // Установка переходов и текста кнопки переключения
     if (isActive) {
         updateToggleButton(false);
         intervalId = setInterval(nextSlideshowImage, INTERVAL);
@@ -74,10 +68,8 @@ window.onbeforeunload = function () {
 function previousSlideshowImage() {
     if (!isHidden) {
         let i = imageNumber;
-        imageNumber = previousImageNumber(imageNumber);
-        // Обновлени картинки
-        updateSlideshowImage(imageNumber);
-        // Обновление индикатора
+        imageNumber = previousImageNumber(imageNumber);  
+        updateSlideshowImage(imageNumber); 
         updateSlideshowIndicator(i, imageNumber);
     }
 }
@@ -86,19 +78,14 @@ function nextSlideshowImage() {
     if (!isHidden) {
         let i = imageNumber;
         imageNumber = nextImageNumber(imageNumber);
-        // Обновлени картинки
         updateSlideshowImage(imageNumber);
-        // Обновление индикатора
         updateSlideshowIndicator(i, imageNumber);
     }
 }
 
 function setSlideshowImage(i) {
-    // Обновление картинки
     updateSlideshowImage(i);
-    // Обновление индикатора
     updateSlideshowIndicator(imageNumber, i)
-    // Установка номера картинки
     imageNumber = i;
 }
 
